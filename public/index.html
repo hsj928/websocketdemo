@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="text">
+    <button id="btn" type="button">发送</button>
+    <script>
+        //创建websocket
+        var ws = new WebSocket('ws://localhost:2333');
+
+        //连接到服务端就发送字符串到客户端
+        //ws.onopen = function(){
+        //    ws.send("来自客户端的消息");
+        //}
+
+        //发送文本框的文本
+        ws.onopen = function() {
+            document.getElementById('btn').onclick = function() {
+                ws.send(document.getElementById('text').value);
+            }
+        }
+        
+        //接收客户端传来的字符串并将其打印
+        ws.onmessage = function(e) {
+            //document.body.innerHTML += '<p>' + e.data + '</p>'
+            var p = document.createElement('p');
+            p.innerHTML = e.data;
+            document.body.appendChild(p);
+        }
+    </script>
+
+</body>
+</html>
